@@ -8,6 +8,6 @@
       </v1:identification>
     </v2:integrationHeader>
     <v2:shipmentNumber><%= tracking_number %></v2:shipmentNumber>
-    <v2:outputFormat><%= output_format %></v2:outputFormat>
+    <v2:outputFormat><%= output_format || "PDF" %></v2:outputFormat>
   </v2:printLabelRequest>
 </soapenv:Body>

@@ -26,19 +26,21 @@ module RoyalMailApi
 
     def savon
       Savon.client(
-        adapter: config.adapter,
-        wsdl: wsdl,
-        endpoint: endpoint,
-        namespace: endpoint,
-        ssl_ca_cert_file: config.ssl_ca_cert_file,
-        ssl_cert_file: config.ssl_cert_file,
-        ssl_cert_key_file: config.ssl_cert_key_file,
-        open_timeout: 600,
-        read_timeout: 600,
-        logger: config.logger,
-        log_level: config.logger.level.zero? ? :debug : :info,
-        log: config.logger.level.zero?,
-        pretty_print_xml: true,
+          #adapter: config.adapter,
+          wsdl: wsdl,
+          endpoint: endpoint,
+          namespace: endpoint,
+          headers:{ "X-IBM-Client-Id": config.client_id,
+                    "X-IBM-Client-Secret": config.client_secret},
+          #ssl_ca_cert_file: config.ssl_ca_cert_file,
+          #ssl_cert_file: config.ssl_cert_file,
+          #ssl_cert_key_file: config.ssl_cert_key_file,
+          open_timeout: 600,
+          read_timeout: 600,
+          logger: config.logger,
+          log_level: config.logger.level.zero? ? :debug : :info,
+          log: config.logger.level.zero?,
+          pretty_print_xml: true,
       )
     end
 
@@ -47,23 +49,23 @@ module RoyalMailApi
 
     def request_type
       case request_name
-      when :get_single_item_summary
-        'tracking'
-      when :create_shipment, :print_label
-        'shipping'
-      else
-        error_message = "Request type #{request_name} is not supported"
-        config.logger&.debug(error_message)
-        raise ArgumentError error_message
+        when :get_single_item_summary
+          'tracking'
+        when :create_shipment, :print_label
+          'shipping'
+        else
+          error_message = "Request type #{request_name} is not supported"
+          config.logger.debug(error_message)
+          raise ArgumentError error_message
       end
     end
 
     def wsdl
       case request_type
-      when 'tracking'
-        config.tracking_wsdl
-      when 'shipping'
-        config.shipping_wsdl
+        when 'tracking'
+          config.tracking_wsdl = config.wsdl
+        when 'shipping'
+          config.shipping_wsdl = config.wsdl
       end
     end
 
@@ -80,19 +82,19 @@ module RoyalMailApi
       # TODO move into own value object
 
       password = config.password
-      creation_date =  Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S')
-      nonce =  rand(999999).to_s
+      creation_date = Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S')
+      nonce = rand(999999).to_s
 
       hashedpassword = Digest::SHA1.base64digest(password)
 
       {
-        username: config.username,
-        application_id: config.application_id,
-        creation_date: creation_date,
-        encoded_nonce: Base64.encode64(nonce),
-        password_digest: Digest::SHA1.base64digest(
-          nonce + creation_date + hashedpassword
-        )
+          username: config.username,
+          application_id: config.application_id,
+          creation_date: creation_date,
+          encoded_nonce: Base64.encode64(nonce),
+          password_digest: Digest::SHA1.base64digest(
+              nonce + creation_date + hashedpassword
+          )
       }
     end
 
