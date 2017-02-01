@@ -61,7 +61,10 @@ create_shipment
     post_code: '',
     weight: weight of letter/parcel,
     country_code: addressee's number's country code,
-    telephone_number: ''
+    telephone_number: '',
+    service_offering_code: 'CRL',
+    service_type: '1',
+    service_enhancement_code: '6'
   }
 
   RoyalMailApi::RequestHandler.request(:create_shipment, attrs)
