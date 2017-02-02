@@ -51,7 +51,7 @@
         </v2:electronicAddress>
       </v2:recipientContact>
       <v2:recipientAddress>
-        <addressLine1><%= address_line1 %></addressLine1>
+        <addressLine1><%= address_line1.gsub("\n",' ') %></addressLine1>
         <addressLine2><%= try(:address_line2) %></addressLine2>
         <postTown><%= post_town %></postTown>
         <postcode><%= post_code %></postcode>

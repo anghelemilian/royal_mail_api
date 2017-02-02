@@ -42,6 +42,10 @@ module RoyalMailApi
       set_description
     end
 
+    def to_s
+      "<code>#{@code} #{@faultcode} #{@faultstring} #{@xml}</code>".html_safe
+    end
+
     private
 
     def set_faultcode
