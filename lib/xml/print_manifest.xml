@@ -1,0 +1,13 @@
+<soapenv:Body>
+  <v2:printManifestRequest>
+    <v2:integrationHeader>
+      <v1:dateTime><%= Time.now.utc.strftime('%Y-%m-%dT%H:%M:%S') %></v1:dateTime>
+      <v1:version>2</v1:version>
+      <v1:identification>
+        <v1:applicationId><%= application_id %></v1:applicationId>
+        <v1:transactionId><%= transaction_id %></v1:transactionId>
+      </v1:identification>
+    </v2:integrationHeader>
+    <v2:manifestBatchNumber><%= manifest_batch_number %></v2:manifestBatchNumber>
+  </v2:printManifestRequest>
+</soapenv:Body>
