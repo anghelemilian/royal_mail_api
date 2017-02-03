@@ -2,7 +2,6 @@ module RoyalMailApi
   class Config
     attr_accessor :username,
                   :password,
-                  #:adapter,
                   :shipping_wsdl,
                   :tracking_wsdl,
                   :wsdl,

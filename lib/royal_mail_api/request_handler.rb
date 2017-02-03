@@ -25,23 +25,41 @@ module RoyalMailApi
     end
 
     def savon
-      Savon.client(
-          #adapter: config.adapter,
-          wsdl: wsdl,
-          endpoint: endpoint,
-          namespace: endpoint,
-          headers:{ "X-IBM-Client-Id": config.client_id,
-                    "X-IBM-Client-Secret": config.client_secret},
-          #ssl_ca_cert_file: config.ssl_ca_cert_file,
-          #ssl_cert_file: config.ssl_cert_file,
-          #ssl_cert_key_file: config.ssl_cert_key_file,
-          open_timeout: 600,
-          read_timeout: 600,
-          logger: config.logger,
-          log_level: config.logger.level.zero? ? :debug : :info,
-          log: config.logger.level.zero?,
-          pretty_print_xml: true,
-      )
+      if config.ssl_ca_cert_file.present? && config.ssl_cert_file.present? && config.ssl_cert_key_file.present?
+        Savon.client(
+            wsdl: wsdl,
+            endpoint: endpoint,
+            namespace: endpoint,
+            headers: {"X-IBM-Client-Id": config.client_id,
+                      "X-IBM-Client-Secret": config.client_secret},
+            ssl_ca_cert_file: config.ssl_ca_cert_file,
+            ssl_cert_file: config.ssl_cert_file,
+            ssl_cert_key_file: config.ssl_cert_key_file,
+            open_timeout: 600,
+            read_timeout: 600,
+            logger: config.logger,
+            log_level: config.logger.level.zero? ? :debug : :info,
+            log: config.logger.level.zero?,
+            pretty_print_xml: true,
+        )
+      else
+        Savon.client(
+            wsdl: wsdl,
+            endpoint: endpoint,
+            namespace: endpoint,
+            headers: {"X-IBM-Client-Id": config.client_id,
+                      "X-IBM-Client-Secret": config.client_secret},
+            #ssl_ca_cert_file: config.ssl_ca_cert_file,
+            #ssl_cert_file: config.ssl_cert_file,
+            #ssl_cert_key_file: config.ssl_cert_key_file,
+            open_timeout: 600,
+            read_timeout: 600,
+            logger: config.logger,
+            log_level: config.logger.level.zero? ? :debug : :info,
+            log: config.logger.level.zero?,
+            pretty_print_xml: true,
+        )
+      end
     end
 
     private
@@ -51,7 +69,7 @@ module RoyalMailApi
       case request_name
         when :get_single_item_summary
           'tracking'
-        when :create_shipment, :print_label,:create_manifest,:print_manifest
+        when :create_shipment, :print_label, :create_manifest, :print_manifest
           'shipping'
         else
           error_message = "Request type #{request_name} is not supported"
