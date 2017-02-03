@@ -32,9 +32,9 @@ in initializers/royal_mail_api.rb
     config.client_id = 'your client id'
     config.client_secret = 'your client secret'
     config.wsdl = 'path to your wsdl file'
-    config.ssl_ca_cert_file = 'path to your Royal Mail ca cert file' // disabled for development use
-    config.ssl_cert_file = 'path to your Royal Mail cert file' // disabled for development use
-    config.ssl_cert_key_file = 'path to your Royal Mail key file' // disabled for development use
+    config.ssl_ca_cert_file = 'path to your Royal Mail ca cert file' 
+    config.ssl_cert_file = 'path to your Royal Mail cert file' 
+    config.ssl_cert_key_file = 'path to your Royal Mail key file' 
     config.endpoint = api endpoint for sandbox/production (eg. "https://api.royalmail.com/shipping/onboarding" or "https://api.royalmail.net/shipping/v2")
     config.logger = Logger.new(STDOUT)
   end
